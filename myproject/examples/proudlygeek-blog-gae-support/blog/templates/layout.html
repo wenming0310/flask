@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang = "en" class = "no-js">
+  <head>
+    <meta charset="utf-8">
+    <!--[if IE]><![endif]-->
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+    Remove this if you use the .htaccess -->
+    <title>
+      {% block title %}{% endblock %} | Proudlygeek's babblings & ramblings 
+    </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">   
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <!-- CSS : implied media="all" -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/boilerplate.css')}}">
+    <!-- CSS : My style -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/syntax.css')}}">
+    <!-- For the less-enabled mobile browsers like Opera Mini -->
+    <link rel="stylesheet" media="handheld" href="{{url_for('static', filename='css/handheld.css')}}">
+    <link href="{{url_for('recent_feed')}}" rel="alternate" title="Recent Changes" type="application/atom+xml">
+    <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+    <script src="{{url_for('static', filename='js/modernizr-1.5.min.js')}}"></script>
+  </head>
+  
+  <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
+  <!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
+  <!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
+  <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
+  <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+  <div id = "container">
+  <header>
+   {% block header %}
+     <div id="nav_title">
+       <h1 class="title_fontface">ProudlyGeek</h1>
+         <ul>
+          {% if session['user_id'] %}
+            <li><a href = "{{url_for('logout')}}">Logout</a></li>
+          {% endif %}
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/">Home</a></li>
+         </ul>
+     </div>
+   {% endblock %}
+     <div class = "login_bar">
+      {% for message in get_flashed_messages() %}
+        <div class = flash>{{ message }} </div>
+      {% endfor %}
+    </div>
+   </header>
+    <div id = "main">
+      {% block body %}
+      {% endblock %}
+    </div>
+    <footer>
+    {% block footer %}
+    <div id="copyright">
+      <p>© Copyright 2011 by Gianluca Bargelli.</p>
+      <p>Content licensed under the Creative Commons attribution-noncommercial-sharealike License.</p>
+      <p>(<a href={{url_for('recent_feed')}}>feed</a>)</p>
+    </div>
+    {% endblock %}
+    </footer>
+  </div>
+  <script>
+     var _gaq = [['_setAccount', 'UA-5286378-2'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+   })(document, 'script');
+  </script>
+</body>
+</html>
