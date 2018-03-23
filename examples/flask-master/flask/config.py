@@ -9,13 +9,14 @@
     :license: BSD, see LICENSE for more details.
 """
 
-import os
-import types
 import errno
+import os
 
+import types
 from werkzeug.utils import import_string
-from ._compat import string_types, iteritems
+
 from . import json
+from ._compat import string_types, iteritems
 
 
 class ConfigAttribute(object):

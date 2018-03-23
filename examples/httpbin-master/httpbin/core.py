@@ -7,29 +7,30 @@ httpbin.core
 This module provides the core HttpBin experience.
 """
 
+import argparse
 import base64
 import json
 import os
 import random
 import time
 import uuid
-import argparse
 
-from flask import Flask, Response, request, render_template, redirect, jsonify as flask_jsonify, make_response, url_for, abort
 from flask_common import Common
-from six.moves import range as xrange
-from werkzeug.datastructures import WWWAuthenticate, MultiDict
-from werkzeug.http import http_date
-from werkzeug.wrappers import BaseResponse
-from werkzeug.http import parse_authorization_header
 from raven.contrib.flask import Sentry
+from six.moves import range as xrange
+from werkzeug.datastructures import MultiDict
+from werkzeug.http import http_date
+from werkzeug.http import parse_authorization_header
+from werkzeug.wrappers import BaseResponse
 
+from flask import Flask, Response, request, render_template, redirect, jsonify as flask_jsonify, make_response, url_for, \
+    abort
 from . import filters
 from .helpers import get_headers, status_code, get_dict, get_request_range, check_basic_auth, check_digest_auth, \
-    secure_cookie, H, ROBOT_TXT, ANGRY_ASCII, parse_multi_value_header, next_stale_after_value, \
+    secure_cookie, ROBOT_TXT, ANGRY_ASCII, parse_multi_value_header, next_stale_after_value, \
     digest_challenge_response
-from .utils import weighted_choice
 from .structures import CaseInsensitiveDict
+from .utils import weighted_choice
 
 ENV_COOKIES = (
     '_gauges_unique',
