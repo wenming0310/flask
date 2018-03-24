@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="$(if [ "$OSTYPE" "==" "cygwin" ]; then cygpath -u 'D:\CC++C#Code\github\flask\examples\flasky\venv_flasky'; else echo '/D/CC++C#Code/github/flask/examples/flasky/venv_flasky'; fi;)"
+VIRTUAL_ENV="$(if [ "$OSTYPE" "==" "cygwin" ]; then cygpath -u 'D:\CC++C#Code\github\flask_test\venv_flasky'; else echo '/D/CC++C#Code/github/flask_test/venv_flasky'; fi;)"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -1,5 +1,5 @@
 @echo off
-set "VIRTUAL_ENV=D:\CC++C#Code\github\flask\examples\flasky\venv_flasky"
+set "VIRTUAL_ENV=D:\CC++C#Code\github\flask_test\venv_flasky"
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"
