@@ -4,11 +4,15 @@ from flask import redirect
 from flask import abort
 from flask.ext.script import Manager
 from flask.ext.bootstrap import Bootstrap
+from flask.ext.moment import Moment
+from datetime import datetime
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+moment = Moment(app)
 #manager = Manager(app)
 
-#把业务逻辑和表现逻辑混在一起会导致代码难以理解和维护
+# 把业务逻辑和表现逻辑混在一起会导致代码难以理解和维护
 """
 #响应http://127.0.0.1:5000/，返回Hello World!
 @app.route('/')
@@ -48,10 +52,10 @@ def user(name):
     return '<h1>Hello, %s!</h1>' % name
 '''
 """
-#渲染模板
+# 使用渲染模板
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.utcnow())
 
 @app.route('/user/<name>')
 def user(name):
