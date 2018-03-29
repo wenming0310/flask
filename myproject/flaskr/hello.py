@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for
 from flask import make_response
 from flask import redirect
 from flask import abort
@@ -61,9 +61,21 @@ def user(name):
 '''
 """
 # 使用渲染模板
+'''
 @app.route('/')
 def index():
     return render_template('index.html', current_time=datetime.utcnow())
+'''
+'''
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    return render_template('index.html', form=form, name=name, current_time=datetime.utcnow())
+'''
 
 @app.route('/user/<name>')
 def user(name):
