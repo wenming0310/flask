@@ -1,0 +1,6 @@
+pip install flask
+pip install request
+pip install flask-script
+pip install flask-bootstrap
+pip install flask-moment
+pip install flask-wtf
