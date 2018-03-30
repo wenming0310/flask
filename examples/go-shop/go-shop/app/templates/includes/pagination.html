@@ -1,0 +1,176 @@
+{% macro render_pagination(pagination, endpoint) %}
+    <ul class="am-pagination am-pagination-centered">
+        <li class="{% if pagination.has_prev %}{% else %}am-disabled{% endif %}">
+            <a href="{{ url_for(endpoint, page=pagination.prev_num) }}">
+                &larr;
+            </a>
+        </li>
+        {%- for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                    <li>
+                        <a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="am-active">
+                        <a href="javascript:void (0);">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li>
+                    <span>…</span>
+                </li>
+            {% endif %}
+        {% endfor -%}
+        <li class="{% if pagination.has_next %}{% else %}am-disabled{% endif %}">
+            <a href="{{ url_for(endpoint, page=pagination.next_num) }}">
+                &rarr;
+            </a>
+        </li>
+    </ul>
+{% endmacro %}
+
+
+{% macro render_pagination_tag(pagination, endpoint, t_id) %}
+    <ul class="am-pagination am-pagination-centered">
+        <li class="{% if pagination.has_prev %}{% else %}am-disabled{% endif %}">
+            <a href="{{ url_for(endpoint, page=pagination.prev_num, t_id=t_id) }}">
+                &larr;
+            </a>
+        </li>
+        {%- for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                    <li>
+                        <a href="{{ url_for(endpoint, page=page, t_id=t_id) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="am-active">
+                        <a href="javascript:void (0);">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li>
+                    <span>…</span>
+                </li>
+            {% endif %}
+        {% endfor -%}
+        <li class="{% if pagination.has_next %}{% else %}am-disabled{% endif %}">
+            <a href="{{ url_for(endpoint, page=pagination.next_num, t_id=t_id) }}">
+                &rarr;
+            </a>
+        </li>
+    </ul>
+{% endmacro %}
+
+
+{% macro render_pagination_admin(pagination, endpoint) %}
+    <div class="am-cf">
+        共 {{ pagination.total }} 条记录
+        <div class="am-fr">
+            <ul class="am-pagination">
+                <li class="{% if pagination.has_prev %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.prev_num) }}">
+                        «
+                    </a>
+                </li>
+                {%- for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <li>
+                                <a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="am-active">
+                                <a href="javascript:void (0);">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            <span>…</span>
+                        </li>
+                    {% endif %}
+                {% endfor -%}
+                <li class="{% if pagination.has_next %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.next_num) }}">
+                        »
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_pagination_admin_tag(pagination, endpoint, t_id) %}
+    <div class="am-cf">
+        共 {{ pagination.total }} 条记录
+        <div class="am-fr">
+            <ul class="am-pagination">
+                <li class="{% if pagination.has_prev %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.prev_num, tag_id=t_id) }}">
+                        «
+                    </a>
+                </li>
+                {%- for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <li>
+                                <a href="{{ url_for(endpoint, page=page, tag_id=t_id) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="am-active">
+                                <a href="javascript:void (0);">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            <span>…</span>
+                        </li>
+                    {% endif %}
+                {% endfor -%}
+                <li class="{% if pagination.has_next %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.next_num, tag_id=t_id) }}">
+                        »
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_pagination_admin_role(pagination, endpoint, r_id) %}
+    <div class="am-cf">
+        共 {{ pagination.total }} 条记录
+        <div class="am-fr">
+            <ul class="am-pagination">
+                <li class="{% if pagination.has_prev %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.prev_num, role_id=r_id) }}">
+                        «
+                    </a>
+                </li>
+                {%- for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <li>
+                                <a href="{{ url_for(endpoint, page=page, role_id=r_id) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="am-active">
+                                <a href="javascript:void (0);">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            <span>…</span>
+                        </li>
+                    {% endif %}
+                {% endfor -%}
+                <li class="{% if pagination.has_next %}{% else %}am-disabled{% endif %}">
+                    <a href="{{ url_for(endpoint, page=pagination.next_num, role_id=r_id) }}">
+                        »
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,27 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+    <div class="am-g am-g-fixed am-margin-top-xl am-container">
+        <ul class="am-avg-sm-1 am-avg-md-4 gallery-list">
+            {%- for c in commodities %}
+                <li class="am-margin-bottom-sm">
+                    <a href="{{ url_for('main.item', c_id=c.id) }}" class="am-link-muted">
+                        <img class="am-img-thumbnail"
+                             src="{{ url_for('_uploads.uploaded_file', setname='PHOTO', filename=c.photos.filter_by(cover=True).first().path) }}"
+                             alt="未上传封面">
+                        <div class="gallery-title am-text-truncate">
+                            <span class="am-text-primary">{{ c.name }}</span>
+                        </div>
+                        <div class="gallery-desc">
+                            <span class="am-text-truncate">{{ c.description }}</span>
+                        </div>
+                    </a>
+                </li>
+            {% endfor -%}
+        </ul>
+    </div>
+    {% if pagination %}
+        {% from 'includes/pagination.html' import render_pagination_tag %}
+        {{ render_pagination_tag(pagination, 'main.tag', t_id=tag.id) }}
+    {% endif %}
+{% endblock %}

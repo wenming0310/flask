@@ -1,0 +1,19 @@
+{% macro flashed_messages(transform={
+                              'danger': 'danger',
+                              'error': 'danger',
+                              'info': 'info',
+                              'warning': 'warning',
+                              'success': 'success',
+                              'message': 'info'
+                            }, default_category='info') -%}
+    {% with messages = get_flashed_messages(with_categories=True) -%}
+        {% if messages -%}
+            {% for cat, msg in messages %}
+                <div class="am-alert am-alert-{{ transform.get(cat.lower(), default_category or cat) }}" data-am-alert>
+                    <button type="button" class="am-close">&times;</button>
+                    <span>{{ msg }}</span>
+                </div>
+            {% endfor -%}
+        {% endif -%}
+    {% endwith -%}
+{% endmacro -%}

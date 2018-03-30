@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+log/
+
+venv/
+
+*.pyc
+
+dist/
+
+app/uploads/
+
+instance/

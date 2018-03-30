@@ -1,0 +1,184 @@
+<!doctype html>
+<html class="no-js">
+{% block head -%}
+    <head>
+        <meta charset="utf-8">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="url-root" content={{ request.url_root | tojson | safe }}>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1">
+        <title>{{ title }}</title>
+
+        <!-- Set render engine for 360 browser -->
+        <meta name="renderer" content="webkit">
+
+        <!-- No Baidu Siteapp-->
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        {% block css %}
+            {% assets "admin_css" %}
+                <link rel="stylesheet" href="{{ ASSET_URL }}">
+            {% endassets %}
+        {% endblock %}
+
+    </head>
+{%- endblock %}
+{% block body -%}
+    <body>
+    <!--[if lte IE 9]>
+    <p class="browsehappy">
+        你正在使用<strong>过时</strong>的浏览器，请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>以获得更好的体验！
+    </p>
+    <![endif]-->
+
+    {% block nav %}
+        <header class="am-topbar am-topbar-inverse admin-header">
+            <div class="am-topbar-brand">
+                <strong>GO SHOP</strong>
+                <small>后台管理</small>
+            </div>
+
+            <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+                    data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+                    class="am-icon-bars"></span></button>
+
+            <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+                <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+                    <li><a href="{{ url_for('main.index') }}"><span class="am-icon-home"></span> 查看站点</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="am-dropdown" data-am-dropdown>
+                            <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                                <span class="am-icon-user"></span> {{ current_user.username }} <span
+                                    class="am-icon-caret-down"></span>
+                            </a>
+                            <ul class="am-dropdown-content">
+                                <li><a href="#"><span class="am-icon-user"></span> 资料</a></li>
+                                <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+                                <li><a href="{{ url_for('admin.logout') }}"><span class="am-icon-power-off"></span>
+                                    退出</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('admin.login') }}"><span class="am-icon-user"></span> 登录</a></li>
+                    {% endif %}
+                    <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
+                            class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+                </ul>
+            </div>
+        </header>
+    {% endblock %}
+
+    <div class="am-cf admin-main">
+        <!-- sidebar start -->
+        {% block siderbar %}
+            <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+                <div class="am-offcanvas-bar admin-offcanvas-bar">
+                    <ul class="am-list admin-sidebar-list">
+                        <li>
+                            {% if url_for('admin.index') is current_link %}
+                                <a href="javascript:;" class="am-active">
+                                    <span class="am-icon-home"></span> 首页
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('admin.index') }}">
+                                    <span class="am-icon-home"></span> 首页
+                                </a>
+                            {% endif %}
+                        </li>
+                        <li>
+                            <a class="am-cf" data-am-collapse="{target: '#user'}"><span
+                                    class="am-icon-users"></span>
+                                用户管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                            <ul class="am-list am-collapse admin-sidebar-sub am-in" id="user">
+                                <li>
+                                    {% if url_for('admin.all_user') is current_link %}
+                                        <a href="javascript:;" class="am-cf am-active">
+                                            <span class="am-icon-user"></span> 用户列表
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url_for('admin.all_user') }}" class="am-cf">
+                                            <span class="am-icon-user"></span> 用户列表
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="am-cf" data-am-collapse="{target: '#commedity'}"><span
+                                    class="am-icon-shopping-basket"></span>
+                                商品管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                            <ul class="am-list am-collapse admin-sidebar-sub am-in" id="commedity">
+                                <li>
+                                    {% if url_for('admin.all_commodity') is current_link %}
+                                        <a href="javascript:;" class="am-cf am-active">
+                                            <span class="am-icon-check"></span> 商品列表
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url_for('admin.all_commodity') }}" class="am-cf">
+                                            <span class="am-icon-check"></span> 商品列表
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="am-panel am-panel-default admin-sidebar-panel">
+                        <div class="am-panel-bd">
+                            <p><span class="am-icon-bookmark"></span> 公告</p>
+                            <p>时光静好，与君语；细水流年，与君同。</p>
+                        </div>
+                    </div>
+
+                    <div class="am-panel am-panel-default admin-sidebar-panel">
+                        <div class="am-panel-bd">
+                            <p><span class="am-icon-tag"></span> wiki</p>
+                            <p>Welcome to the Go Shop!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        <!-- sidebar end -->
+
+        <!-- content start -->
+        <div class="admin-content">
+            <div class="admin-content-body">
+                {% block content %}{% endblock %}
+            </div>
+
+            <footer class="admin-content-footer">
+                <hr>
+                <p class="am-padding-left">Copyright &copy; 2017</p>
+            </footer>
+        </div>
+        <!-- content end -->
+
+    </div>
+
+    <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
+       data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+
+    {% block scripts -%}
+        <!--[if lt IE 9]>
+        {% assets "admin_js_ie8" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        <![endif]-->
+
+        <!--[if (gte IE 9)|!(IE)]><!-->
+        {% assets "admin_js" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        <!--<![endif]-->
+    {%- endblock %}
+    </body>
+{%- endblock %}
+</html>

@@ -1,0 +1,59 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+    <div class="am-container am-margin-top-xl">
+        <div class="am-g am-g-fixed">
+            {% if commodities %}
+                <table class="am-table am-table-bordered am-table-radius am-table-striped">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        {% if current_user.is_vip %}
+                            <th>单价(VIP)</th>
+                        {% else %}
+                            <th>单价</th>
+                        {% endif %}
+                        <th>数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in commodities %}
+                        <tr>
+                            <td>{{ c.name }}</td>
+                            {% if current_user.is_vip %}
+                                <td>{{ c.vip_price }}</td>
+                            {% else %}
+                                <td>{{ c.price }}</td>
+                            {% endif %}
+                            <td>
+                                <span id="num">1</span>
+                                <div class="am-btn-group-xs am-fr">
+                                    <button class="am-btn am-btn-secondary">
+                                        <i class="am-icon-plus"></i>
+                                    </button>
+                                    <button class="am-btn am-btn-warning">
+                                        <i class="am-icon-minus"></i>
+                                    </button>
+                                    <button class="am-btn am-btn-danger">
+                                        <i class="am-icon-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="am-btn-group am-fr">
+                    <button class="am-btn am-btn-success">
+                        <i class="am-icon-check"></i> 支付
+                    </button>
+                    <button class="am-btn am-btn-danger">
+                        <i class="am-icon-close"></i> 清空
+                    </button>
+                </div>
+            {% else %}
+                购物车空空如也 <a href="{{ url_for('main.index') }}">去挑选吧</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

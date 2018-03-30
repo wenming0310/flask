@@ -1,0 +1,162 @@
+{% extends 'includes/admin_base.html' %}
+
+{% block content %}
+    <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf">
+            <strong class="am-text-primary am-text-lg">{{ commodity.name }}</strong>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="am-g">
+        <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+            {% from 'includes/flash.html' import flashed_messages %}
+            {{ flashed_messages() }}
+        </div>
+        <div class="am-tabs am-margin" data-am-tabs="{noSwipe: 1}">
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class=""><a href="#tab-desc">详细描述</a></li>
+                <li class="am-active"><a href="#tab-photo">图片</a></li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel am-fade" id="tab-desc">
+                    <form class="am-form"
+                          action="{{ url_for('admin.commodity_detail', c_id=commodity.id) }}"
+                          method="POST">
+                        {{ commodity_form.csrf_token }}
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                {{ commodity_form.name.label }}
+                            </div>
+                            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                {{ commodity_form.name(class="am-input-sm") }}
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                {{ commodity_form.price.label }}
+                            </div>
+                            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                {{ commodity_form.price(class="am-input-sm") }}
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                {{ commodity_form.tags.label }}
+                            </div>
+                            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                {{ commodity_form.tags(class="am-input-sm") }}
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-6">已选分类: {{ commodity.tag.name }}</div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                {{ commodity_form.vip_price.label }}
+                            </div>
+                            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                                {{ commodity_form.vip_price(class="am-input-sm") }}
+                            </div>
+                        </div>
+
+                        <div class="am-g am-margin-top">
+                            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                {{ commodity_form.digest.label }}
+                            </div>
+                            <div class="am-u-sm-8 am-u-md-4">
+                                {{ commodity_form.digest(class="am-input-sm") }}
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-6">限制100个字</div>
+                        </div>
+
+                        <div class="am-g am-margin-top-sm">
+                            <div class="am-u-sm-12 am-u-md-2 am-text-right admin-form-text">
+                                {{ commodity_form.description.label }}
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-10">
+                                {{ commodity_form.description(rows="10", placeholder="限制500个字") }}
+                            </div>
+                        </div>
+
+                        {{ commodity_form.submit(class="am-btn am-btn-default") }}
+                    </form>
+
+                </div>
+
+                <div class="am-tab-panel am-fade am-in am-active" id="tab-photo">
+                    <div class="am-u-md-8">
+                        <form class="am-form"
+                              enctype=multipart/form-data
+                              action="{{ url_for('admin.commodity_upload', c_id=commodity.id) }}"
+                              method="POST">
+                            {{ photo_form.csrf_token }}
+                            <div class="am-form-group am-form-file">
+                                {{ photo_form.files(multiple='multiple', required='required', id="doc-form-file", class="am-input") }}
+                                <button type="button" class="am-btn am-btn-default am-btn-sm">
+                                    <i class="am-icon-cloud-upload"></i> 选择要上传的文件
+                                </button>
+                            </div>
+                            <div id="file-list"></div>
+                            {{ photo_form.submit(class="am-btn am-btn-default") }}
+                        </form>
+                    </div>
+                    <div class="am-u-md-4">
+                        建议最多选四张图
+                        <br>
+                        <i class="am-icon-star am-text-warning"></i> 封面展示
+                        <br>
+                        <i class="am-icon-bell am-text-success"></i> 轮播展示
+                        <br>
+                        <i class="am-icon-trash am-text-danger"></i> 删除
+                    </div>
+                    <div class="am-g">
+                        <ul class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list">
+                            {% for photo in commodity.photos.all() %}
+                                <li>
+                                    <img class="am-img-thumbnail am-img-bdrs"
+                                         src="{{ url_for('_uploads.uploaded_file', setname='PHOTO', filename=photo.path) }}"
+                                         alt=""/>
+                                    <div class="am-btn-group-xs am-margin-top-xs">
+                                        <a href="{{ url_for('admin.commodity_cover', c_id=commodity.id, p_id=photo.id) }}"
+                                           class="am-btn am-btn-default">
+                                            <i class="am-icon-star {% if photo.cover %}am-text-warning{% endif %}"></i>
+                                        </a>
+                                        <a href="{{ url_for('admin.commodity_show', c_id=commodity.id, p_id=photo.id) }}"
+                                           class="am-btn am-btn-default">
+                                            <i class="am-icon-bell {% if photo.show %}am-text-success{% endif %}"></i>
+                                        </a>
+                                        <a href="{{ url_for('admin.commodity_delete', c_id=commodity.id, p_id=photo.id) }}"
+                                           class="am-btn am-btn-default">
+                                            <i class="am-icon-trash am-text-danger"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(function () {
+            $('#doc-form-file').on('change', function () {
+                var fileNames = '';
+                $.each(this.files, function () {
+                    fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                });
+                $('#file-list').html(fileNames);
+            });
+        });
+    </script>
+{% endblock %}

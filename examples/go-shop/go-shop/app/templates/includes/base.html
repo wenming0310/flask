@@ -1,0 +1,129 @@
+<!doctype html>
+<html class="no-js">
+{% block head -%}
+    <head>
+        <meta charset="utf-8">
+        <meta name="csrf-token" content={{ csrf_token() }}>
+        <meta name="url-root" content={{ request.url_root | tojson | safe }}>
+        <meta name="user-token" content={{ g.user_token }}>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1">
+        <title>{{ title }}</title>
+
+        <!-- Set render engine for 360 browser -->
+        <meta name="renderer" content="webkit">
+
+        <!-- No Baidu Siteapp-->
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        {% block css %}
+            {% assets "main_css" %}
+                <link rel="stylesheet" href="{{ ASSET_URL }}">
+            {% endassets %}
+        {% endblock %}
+
+    </head>
+{%- endblock %}
+{% block body -%}
+    <body>
+    <!--[if lte IE 9]>
+    <p class="browsehappy">
+        你正在使用<strong>过时</strong>的浏览器，请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>以获得更好的体验！
+    </p>
+    <![endif]-->
+
+    {% block navbar -%}
+        <header class="am-topbar am-topbar-fixed-top">
+            <div class="am-container">
+                <h1 class="am-topbar-brand">
+                    <a href="{{ url_for('main.index') }}">GO SHOP</a>
+                </h1>
+
+                <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-secondary am-show-sm-only"
+                        data-am-collapse="{target: '#collapse-head'}"><span class="am-sr-only">导航切换</span> <span
+                        class="am-icon-bars"></span></button>
+                <div class="am-dropdown am-topbar-left am-btn am-btn am-topbar-btn am-btn-sm" data-am-dropdown>
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                        分类（{% if tag %}{{ tag.name }}{% else %}全部{% endif %}） <span class="am-icon-caret-down"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li class="{% if not tag %}am-active{% endif %}">
+                            <a href="{{ url_for('main.index') }}">
+                                全部
+                            </a>
+                        </li>
+                        {% for t in g.tags %}
+                            <li class="{% if tag and tag.id==t.id %}am-active{% endif %}">
+                                <a href="{{ url_for('main.tag', t_id=t.id) }}">
+                                    {{ t.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="am-collapse am-topbar-collapse" id="collapse-head">
+                    {% if current_user.is_anonymous %}
+                        <div class="am-topbar-right">
+                            <a href="{{ url_for('auth.register') }}" class="am-btn am-btn am-topbar-btn am-btn-sm"><span
+                                    class="am-icon-plus"></span> 注册
+                            </a>
+                        </div>
+
+                        <div class="am-topbar-right">
+                            <a href="{{ url_for('auth.login') }}" class="am-btn am-btn am-topbar-btn am-btn-sm"><span
+                                    class="am-icon-user"></span>
+                                登录
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="am-topbar-right am-dropdown" data-am-dropdown>
+                            <a class="am-dropdown-toggle am-btn am-btn am-topbar-btn am-btn-sm" data-am-dropdown-toggle
+                               href="javascript:;">
+                                {{ current_user.username }} <span class="am-icon-caret-down"></span>
+                            </a>
+                            <ul class="am-dropdown-content">
+                                {% if current_user.is_admin %}
+                                    <li><a href="{{ url_for('admin.index') }}">管理员</a></li>
+                                {% endif %}
+                                <li><a href="{{ url_for('auth.cart') }}">购物车</a></li>
+                                <li><a href="{{ url_for('auth.logout') }}">退出</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+    {%- endblock %}
+
+    {% block content -%}{%- endblock %}
+
+    {% block footer -%}
+        <footer class="am-margin-top">
+            <hr/>
+            <p class="am-text-center">
+                <small>Copyright &copy; 2017</small>
+            </p>
+        </footer>
+    {%- endblock %}
+
+    {% block scripts -%}
+        <!--[if lt IE 9]>
+        {% assets "main_js_ie8" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        <![endif]-->
+
+        <!--[if (gte IE 9)|!(IE)]><!-->
+        {% assets "main_js" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        <!--<![endif]-->
+    {%- endblock %}
+    </body>
+{%- endblock %}
+</html>

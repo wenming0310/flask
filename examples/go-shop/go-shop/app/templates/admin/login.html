@@ -1,0 +1,28 @@
+{% extends 'includes/admin_base.html' %}
+
+{% block content %}
+    <div class="am-g am-margin-top-xl">
+        <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+            {% from 'includes/flash.html' import flashed_messages %}
+            {{ flashed_messages() }}
+        </div>
+        <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+            <form action="{{ url_for('admin.login') }}" method="POST" class="am-form">
+                {{ form.hidden_tag() }}
+                <label class="am-hide" for="username">用户名:</label>
+                {{ form.username(class="form-control", placeholder="用户名", autofocus="autofocus", required="required") }}
+                <br>
+                <label class="am-hide" for="password">密码:</label>
+                {{ form.password(class="form-control", placeholder="密码", required="required") }}
+                <br/>
+                <div class="am-cf">
+                    {{ form.submit(class="am-btn am-btn-primary am-fl") }}
+                    <a href="{{ url_for('main.index') }}" class="am-fr">返回</a>
+                </div>
+            </form>
+            <br>
+            <br>
+        </div>
+    </div>
+{% endblock %}
+

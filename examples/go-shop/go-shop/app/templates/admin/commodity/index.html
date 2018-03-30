@@ -1,0 +1,113 @@
+{% extends 'includes/admin_base.html' %}
+
+{% block content %}
+    <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf">
+            <strong class="am-text-primary am-text-lg">商品列表</strong>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="am-g">
+        <div class="am-u-sm-12 am-u-md-6">
+            <div class="am-btn-toolbar">
+                <div class="am-btn-group am-btn-group-xs">
+                    <button type="button" class="am-btn am-btn-secondary"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                </div>
+            </div>
+        </div>
+        <div class="am-u-sm-12 am-u-md-3">
+            <div class="am-form-group">
+                <select data-am-selected="{btnSize: 'sm'}" id="tag">
+                    <option value="all">所有类别</option>
+                    {% for t in g.tags %}
+                        <option value="{{ t.id }}">{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="am-u-sm-12 am-u-md-3">
+            <div class="am-input-group am-input-group-sm">
+                <input type="text" class="am-form-field">
+                    <span class="am-input-group-btn">
+                    <button class="am-btn am-btn-default" type="button">搜索</button>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-g">
+        <div class="am-u-sm-12">
+            <form class="am-form">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th class="table-check"><input type="checkbox" id="check_all"/></th>
+                        <th class="">ID</th>
+                        <th class="">名称</th>
+                        <th class="">普通价格</th>
+                        <th class="">会员价格</th>
+                        <th class="am-hide-sm-only">创建日期</th>
+                        <th class="">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in commodities %}
+                        <tr>
+                            <td><input type="checkbox"/></td>
+                            <td>{{ c.id }}</td>
+                            <td><a href="#">{{ c.name }}</a></td>
+                            <td>{{ c.price }}</td>
+                            <td>{{ c.vip_price }}</td>
+                            <td class="am-hide-sm-only">{{ c.create_time }}</td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <a href="{{ url_for('admin.commodity_detail', c_id=c.id) }}"
+                                           class="am-btn am-btn-xs am-btn-secondary"><span
+                                                class="am-icon-pencil-square-o"></span> 编辑
+                                        </a>
+                                        <a class="am-btn am-btn-xs am-btn-danger"><span
+                                                class="am-icon-trash-o"></span> 删除
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if pagination %}
+                    {% if tag %}
+                        {% from 'includes/pagination.html' import render_pagination_admin_tag %}
+                        {{ render_pagination_admin_tag(pagination, 'admin.all_commodity', tag.id) }}
+                    {% else %}
+                        {% from 'includes/pagination.html' import render_pagination_admin %}
+                        {{ render_pagination_admin(pagination, 'admin.all_commodity') }}
+                    {% endif %}
+                {% endif %}
+                <hr/>
+                <p>注：.....</p>
+            </form>
+        </div>
+
+    </div>
+
+    {% from 'includes/modal.html' import error_modal %}
+    {{ error_modal() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        (function () {
+            var check_all = $("#check_all");
+            check_all.on("click", function () {
+                let c = check_all.prop("checked");
+                $("input[type='checkbox']").prop("checked", c);
+            });
+        })();
+    </script>
+{% endblock %}

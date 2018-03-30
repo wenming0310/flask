@@ -1,0 +1,99 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+    {% from 'includes/modal.html' import error_modal %}
+    {{ error_modal() }}
+    <div class="am-g am-g-fixed am-margin-top-xl">
+        <div class="am-u-md-10 am-u-md-centered">
+            <div class="am-u-sm-11 am-u-sm-centered">
+                <div data-am-widget="slider" class="am-slider am-slider-default"
+                     data-am-slider='{&quot;animation&quot;:&quot;slide&quot;,&quot;controlNav&quot;:&quot;thumbnails&quot;}'>
+                    <ul class="am-slides">
+                        {% for photo in commodity.photos.filter_by(show=True).all() %}
+                            <li data-thumb="{{ url_for('_uploads.uploaded_file', setname='PHOTO', filename=photo.path) }}">
+                                <img src="{{ url_for('_uploads.uploaded_file', setname='PHOTO', filename=photo.path) }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <article class="am-article">
+                    <div class="am-article-hd">
+                        <h1 class="am-article-title am-text-break">
+                            {{ commodity.name }}
+                        </h1>
+                        {% if current_user.is_anonymous %}
+                            <a class="am-btn am-btn-xs am-btn-primary" href="{{ url_for('auth.login') }}?next={{ request.url }}">
+                                登录购买
+                            </a>
+                        {% else %}
+                            <button class="am-btn am-btn-xs am-btn-success"
+                                    c_id="{{ commodity.id }}"
+                                    id="add">
+                                添加
+                            </button>
+                        {% endif %}
+                        <p class="am-article-meta">
+                            <span class="am-text-primary">普通价 ¥ {{ commodity.price }}</span>
+                            &nbsp;&nbsp;&nbsp;
+                            <span class="am-text-danger">会员价 ¥ {{ commodity.vip_price }}</span>
+                        </p>
+                    </div>
+                    <div class="am-article-bd">
+                        <p class="am-article-lead am-text-break">{{ commodity.description }}</p>
+                    </div>
+                </article>
+                <hr/>
+                <ul class="am-comments-list">
+                    {% for c in commodity.comments %}
+                        <li class="am-comment">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='img/1.jpg') }}"
+                                     alt="" class="am-comment-avatar" width="48" height="48">
+                            </a>
+                            <div class="am-comment-main">
+                                <header class="am-comment-hd">
+                                    <div class="am-comment-meta">
+                                        <a href="#" class="am-comment-author">{{ c.user.username }}</a> 评论于
+                                        <time datetime="{{ c.create_time }}"
+                                              title="{{ c.create_time }}">{{ c.create_time }}
+                                        </time>
+                                    </div>
+                                </header>
+                                <div class="am-comment-bd">
+                                    <p class="am-text-break">{{ c.body }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $("#add").on("click", function (e) {
+            e.preventDefault();
+            let self = $(this);
+            let id = self.attr("c_id");
+            let modal = $("#error-modal");
+            let msg = modal.find(".am-modal-bd");
+            $.getJSON($URL_ROOT + 'api/cart/add', {"id": id}, function (data) {
+                if (data.status) {
+                    if (msg.hasClass("am-text-danger")) {
+                        msg.removeClass("am-text-danger");
+                    }
+                    msg.text(data.msg).addClass("am-text-success");
+                } else {
+                    if (msg.hasClass("am-text-success")) {
+                        msg.removeClass("am-text-success");
+                    }
+                    msg.text(data.msg).addClass("am-text-danger");
+                }
+                modal.modal();
+            })
+        })
+    </script>
+{% endblock %}
