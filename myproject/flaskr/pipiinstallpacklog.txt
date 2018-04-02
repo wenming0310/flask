@@ -4,7 +4,8 @@ pip install flask-script
 pip install flask-bootstrap
 pip install flask-moment
 pip install flask-wtf
-
+pip install flask-migrate
+pip install flask-mail
 数据库
 pip install flask-sqlalchemy
 
