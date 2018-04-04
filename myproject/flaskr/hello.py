@@ -11,6 +11,7 @@ from flask_script import Shell
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_mail import Mail
+from flask_mail import Message
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,6 +20,7 @@ app.config['SECRET_KEY'] = 'hard to guess string'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 #app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['FLASKY_MAIL_SENDER'] = 'Flasky Admin <flasky@example.com>'
 #app.config['WTF_CSRF_ENABLED'] = 'False'
 mail = Mail(app)
 
@@ -50,6 +52,13 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+def send_email(to, subject, template, **kwargs):
+    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject, sender=app.config['FLASKY_MAIL_SENDER'], redirects=[to])
+    msg.body = render_template(template + '.txt', **kwargs)
+    msg.html = render_template(template + '.html', **kwargs)
+    mail.send(msg)
 
 
 # 把业务逻辑和表现逻辑混在一起会导致代码难以理解和维护
