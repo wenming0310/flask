@@ -158,7 +158,8 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 #2018-4-5 nocommit
 #D:\CC++C#Code
 if __name__ == '__main__':
-    #app.run()
+    #2018年4月7日23:43:52 在第六章停止更新，电子邮件部分和第七章简单了解了一下，开始第二部分，写实例
+    app.run()
 
     #使用Flask-Script
-    manager.run()
+    #manager.run()
