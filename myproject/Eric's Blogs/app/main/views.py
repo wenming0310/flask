@@ -9,6 +9,8 @@ from .forms import NameForm
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
+    # db.drop_all()
+    #db.create_all()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()
         if user is None:

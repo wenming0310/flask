@@ -20,6 +20,16 @@ def create_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
+    '''
+    #方法二
+    db.app = app
+    # db.drop_all()
+    db.create_all()
+    '''
+    #方法三
+    with app.test_request_context():
+        db.create_all()
+
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

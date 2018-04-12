@@ -42,7 +42,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{passwd}@{ip}:{port}/{database}?charset={charset}' \
         .format(user='root',
-                passwd='Trl.1991318',
+                passwd='root',
                 ip='localhost',
                 port=3306,
                 database='go-shop',
@@ -53,8 +53,8 @@ class DevelopmentConfig(Config):
     MAIL_PORT = 465
     MAIL_USE_TLS = True
     MAIL_USE_SSL = True
-    MAIL_USERNAME = 'tianruoliang@sina.com'
-    MAIL_PASSWORD = 'Trl.1991318'
+    MAIL_USERNAME = 'zhaowenming0310@sina.com'
+    MAIL_PASSWORD = 'zhaowenming'
     MAIL_DEFAULT_SENDER = 'Go Shop Dev'
     ASSETS_DEBUG = True
 
