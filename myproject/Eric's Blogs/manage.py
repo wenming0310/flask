@@ -17,7 +17,8 @@ def test():
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-manager.add_command("shell", Shell(make_context=make_shell_context()))
+#下面这行如果不注释掉在控制台输入python manage.py shell会报以下错误：TypeError: <flask_script.commands.Shell object at 0x03D74730>: 'dict' object is not callable
+#manager.add_command("shell", Shell(make_context=make_shell_context()))
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
