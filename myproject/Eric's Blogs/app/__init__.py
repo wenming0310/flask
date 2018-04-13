@@ -12,9 +12,8 @@ moment = Moment()
 db = SQLAlchemy()
 
 login_manager = LoginManager()
-login_manager.session_protection = 'strong'
+#login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
-
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -37,11 +36,14 @@ def create_app(config_name):
         db.create_all()
 
 
+
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_pref='/auth')
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')#url_prefix这里如果写错成url_pre在启动时就不会显示Login界面，
+    # 同时不会报错，跳转http://127.0.0.1:5000/auth/login时会出现无法找到页面的情况
 
     return app
 
