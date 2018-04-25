@@ -41,6 +41,4 @@ def create_app(config_name):
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')#url_prefix这里如果写错成url_pre在启动时就不会显示Login界面，
     # 同时不会报错，跳转http://127.0.0.1:5000/auth/login时会出现无法找到页面的情况
-
     return app
-
